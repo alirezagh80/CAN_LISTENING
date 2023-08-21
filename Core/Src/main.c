@@ -53,8 +53,6 @@ CAN_RxHeaderTypeDef RxHeader;
 uint8_t CAN_TxData[8];
 uint8_t CAN_RxData[8];
 
-uint32_t TxMailbox;
-
 int datacheck = 0;
 /* USER CODE END PV */
 
@@ -144,37 +142,22 @@ int main(void)
   canfil.FilterActivation = ENABLE;
   canfil.SlaveStartFilterBank = 14;
 	
-	HAL_CAN_ConfigFilter(&hcan,&canfil);
+  HAL_CAN_ConfigFilter(&hcan,&canfil);
 	
-	HAL_CAN_Start(&hcan);
+  HAL_CAN_Start(&hcan);
   HAL_CAN_ActivateNotification(&hcan, CAN_IT_RX_FIFO0_MSG_PENDING);// Activate the notification
-//	HAL_CAN_ActivateNotification(&hcan, CAN_IT_RX_FIFO1_MSG_PENDING);// Activate the notification
-
-  //TxHeader.DLC = 2;  // data length
-  //TxHeader.IDE = CAN_ID_STD;
-  //TxHeader.RTR = CAN_RTR_DATA;
-  //TxHeader.StdId = 0x103;  // ID
-
-
-  //CAN_TxData[0] = 200;  // ms delay
-  //CAN_TxData[1] = 20;  // loop rep
-  /* USER CODE END 2 */
-
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
+  
 	printf("Start Program...\r\n");
 	printf("StdId-ExtId-IDE-RTR-DLC-Timestamp-FilterMatchIndex");
   while (1)
   {
 		if (datacheck)
-	  {
-			//rs485_print("receive:\r\n");
-			
+		{
+			//rs485_print("receive:\r\n");		
 			printf("id:%03X data:%02X,%02X,%02X,%02X,%02X,%02X,%02X,%02X\r\n",RxHeader.StdId,CAN_RxData[0],CAN_RxData[1],CAN_RxData[2],CAN_RxData[3],CAN_RxData[4],CAN_RxData[5],CAN_RxData[6],CAN_RxData[7]);
 			datacheck=0;
 		}
 		//HAL_Delay(1000);
-		//HAL_CAN_AddTxMessage(&hcan, &TxHeader, CAN_TxData, &TxMailbox);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
